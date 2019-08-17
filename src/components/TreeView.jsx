@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import {connect} from 'react-redux'
 
 import Node from "./Node";
+import * as actions from '../actions'
 
 const Container = styled.div`
     width: 40vw;
@@ -12,44 +14,25 @@ const Container = styled.div`
     padding: 10px;
 `
 
-const node = {
-    id: '1',
-    value: 'name',
-    deleted: false,
-    children: [
-        {
-            id: '1.2',
-            value: 'name2',
-            deleted: false,
-            children: []
-        },
-        {
-            id: '1.3',
-            value: 'name3',
-            deleted: false,
-            children: [
-                {
-                    id: '1.3.4',
-                    value: 'name4',
-                    deleted: false,
-                    children: [
-                        {
-                            id: '1.2',
-                            value: 'name2',
-                            deleted: false,
-                            children: []
-                        },
-                    ]
-                }
-            ]
-        }
-    ]
-}
-
-export default function TreeView () {
+export default function TreeView (props) {
+    const {tree, selectNode, selectedNode} = props
+    // console.log(selectedNode)
     return(
         <Container>
-            <Node node={node}/>
+            <Node
+                node={tree}
+                selectNode={selectNode}
+                selectedNode={selectedNode}/>
         </Container>
     )
 }
+
+// const mapDispatchToProps = dispatch => ({
+//     selectNode: node => dispatch(actions.selectNode(node))
+// })
+//
+// const mapStateToProps = state => ({
+//     selectedNode: state.selectedNode
+// })
+//
+// connect(mapStateToProps, mapDispatchToProps)(TreeView)

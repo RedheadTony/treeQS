@@ -18,7 +18,7 @@ const ButtonGroup = styled.div`
     justify-content: space-between;
 `
 
-export default function ActionsPanel() {
+export default function ActionsPanel({reset}) {
     return(
         <Container>
             <ButtonGroup style={{width: 100}}>
@@ -28,7 +28,7 @@ export default function ActionsPanel() {
             </ButtonGroup>
             <ButtonGroup style={{width: 130}}>
                 <Button>Apply</Button>
-                <Button>Reset</Button>
+                <Button onClick={reset}>Reset</Button>
             </ButtonGroup>
         </Container>
     )

@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import {connect} from 'react-redux'
 
 import TreeView from "./TreeView";
 import ActionsPanel from "./ActionsPanel";
 import MoveButton from "./MoveButton";
+import * as actions from '../actions'
 
 const Container = styled.div`
     background-color: #eaeaea;
@@ -28,17 +30,42 @@ const GetElementButtonWrapper = styled.div`
 const CachedTreeViewWrapper = styled.div`
 `
 
-export default function App() {
+function App(props) {
+    // console.log(props)
+    const {dataBase, cache, moveToCache, selectedNode, selectNode, reset} = props
+    // console.log('dataBase')
+    // console.log(dataBase)
+
     return(
         <Container>
             <div>
-                <TreeView/>
-                <ActionsPanel/>
+                <TreeView
+                    tree={cache}
+                    selectedNode={{}}
+                    selectNode={() => {}}/>
+                <ActionsPanel reset={reset}/>
             </div>
             <GetElementButtonWrapper>
-                <MoveButton/>
+                <MoveButton onClick={moveToCache}/>
             </GetElementButtonWrapper>
-            <TreeView/>
+            <TreeView
+                tree={dataBase}
+                selectNode={selectNode}
+                selectedNode={selectedNode}/>
         </Container>
     )
 }
+
+const mapStateToProps = state => ({
+    dataBase: state.dataBase,
+    cache: state.cache,
+    selectedNode: state.selectedNode
+})
+
+const mapDispatchToProps = dispatch => ({
+    moveToCache: () => dispatch(actions.moveToCache()),
+    selectNode: node => dispatch(actions.selectNode(node)),
+    reset: () => dispatch(actions.reset())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

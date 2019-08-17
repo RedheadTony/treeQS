@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 import {Button} from './commonStyledComponent/buttons'
 
-export default function MoveButton() {
+export default function MoveButton({onClick}) {
     return(
-        <Button style={{margin: 10}}>{'<<<'}</Button>
+        <Button onClick={onClick} style={{margin: 10}}>{'<<<'}</Button>
     )
 }
