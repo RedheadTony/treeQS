@@ -21,3 +21,7 @@ export const INCREMENT_ID = 'INCREMENT_ID'
 export const EDIT_NEW_ELEMENT = 'EDIT_NEW_ELEMENT'
 
 export const DELETE = 'DELETE'
+
+export const APPLY = 'APPLY'
+
+export const SET_DATA_BASE = 'SET_DATA_BASE'

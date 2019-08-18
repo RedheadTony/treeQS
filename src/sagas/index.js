@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest, select, fork } from 'redux-saga/effects'
 
 import * as types from '../actionTypes'
-import {setCache, selectNode, addId, openModal, closeModal, incrementId, selectCacheNode, deleteElement} from "../actions";
+import {setCache, selectNode, addId, openModal, closeModal, incrementId, selectCacheNode, deleteElement, setDataBase} from "../actions";
 
 function* moveToCache({dispatch}) {
     try {
@@ -59,6 +59,13 @@ function* moveToCache({dispatch}) {
         console.log(parentNode)
         if(parentNode.deleted) {
             valuePlace[valueToAdd.id].deleted = true
+            // const deleteWithChildren = (deletingElement) => {
+            //     deletingElement.deleted = true
+            //     for (const id in deletingElement.children) {
+            //         deleteWithChildren(deletingElement.children[id])
+            //     }
+            // }
+            // deleteWithChildren(valuePlace[valueToAdd.id])
         }
         yield put(setCache(newCache))
         yield put(addId(valueToAdd.id))
@@ -171,12 +178,75 @@ function* deleteElementSaga() {
         const deleteWithChildren = (deletingElement) => {
             deletingElement.deleted = true
             for (const id in deletingElement.children) {
-                deleteWithChildren(deletingElement.children[id])
+                if(!deletingElement.children[id].deleted) {
+                    deleteWithChildren(deletingElement.children[id])
+                }
             }
         }
         deleteWithChildren(deletingElement)
+        for (const id in newCache) {
+            const indexOfId = newCache[id].parentPath.indexOf(selectedId)
+            if(indexOfId !== -1) {
+                deleteWithChildren(newCache[id])
+            }
+        }
         yield put(setCache(newCache))
         yield put(selectCacheNode({}))
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+function* apply() {
+
+    try {
+        const deleteWithChildren = (deletingElement) => {
+            console.log('deleted ' + deletingElement.value)
+            deletingElement.deleted = true
+            for (const id in deletingElement.children) {
+                if(!deletingElement.children[id].deleted) {
+                    deleteWithChildren(deletingElement.children[id])
+                }
+            }
+        }
+
+        const {cache, dataBase} = yield select()
+        const dbCopy = JSON.parse(JSON.stringify(dataBase))
+        const applyChildren = (cacheChild, dbChild) => {
+            for (const id in cacheChild) {
+                // dbChild[id].deleted = cacheChild[id].deleted
+                if(dbChild[id]) {
+                    if(cacheChild[id].deleted) {
+                        deleteWithChildren(dbChild[id])
+                    }
+                    dbChild[id].value = cacheChild[id].value
+                } else {
+                    dbChild[id] = JSON.parse(JSON.stringify(cacheChild[id]))
+                }
+
+                applyChildren(cacheChild[id].children, dbChild[id].children)
+            }
+        }
+        for (const id in cache) {
+            const element = cache[id]
+            const splitPath = element.parentPath.split('.')
+            let elementInDb = dbCopy
+            splitPath.shift()
+            for (let i = 0; i < splitPath.length; i++) {
+                elementInDb = elementInDb[splitPath[i]].children
+            }
+            // elementInDb[element.id].deleted = element.deleted
+            if(element.deleted) {
+                deleteWithChildren(elementInDb[id])
+            }
+            elementInDb[element.id].value = element.value
+            applyChildren(element.children, elementInDb[element.id].children)
+            // console.log('test')
+            // console.log(JSON.parse(JSON.stringify(elementInDb[element.id])))
+        }
+        console.log('dataBase')
+        console.log(dataBase)
+        yield put(setDataBase(dbCopy))
     } catch (e) {
         console.log(e)
     }
@@ -187,6 +257,7 @@ function* mySaga() {
     yield takeLatest(types.ADD_NEW_ELEMENT, addNewElement);
     yield takeLatest(types.EDIT_NEW_ELEMENT, editElement);
     yield takeEvery(types.DELETE, deleteElementSaga);
+    yield takeEvery(types.APPLY, apply);
 }
 
 export default mySaga;

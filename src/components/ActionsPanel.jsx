@@ -60,6 +60,11 @@ export default class ActionsPanel extends React.Component {
         deleteElement(id, parentPath)
     }
 
+    apply = () => {
+        const {apply} = this.props
+        apply()
+    }
+
     addNewElement = value => console.log('adding ' + value)
     editingNewElement = value => console.log('editing ' + value)
 
@@ -94,7 +99,7 @@ export default class ActionsPanel extends React.Component {
                         </Button>
                     </ButtonGroup>
                     <ButtonGroup style={{width: 130}}>
-                        <Button>Apply</Button>
+                        <Button onClick={this.apply}>Apply</Button>
                         <Button onClick={reset}>Reset</Button>
                     </ButtonGroup>
                 </Container>

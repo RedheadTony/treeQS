@@ -70,6 +70,7 @@ export default class ModalForm extends React.Component {
     sendData = () => {
         const {onSubmit, onClose} = this.props
         const {value} = this.state
+        this.setState({value: ''})
         onSubmit(value)
         onClose()
     }

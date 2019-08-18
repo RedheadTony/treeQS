@@ -48,7 +48,8 @@ function App(props) {
         selectCacheNode,
         addNewElement,
         editElement,
-        deleteElement
+        deleteElement,
+        apply
     } = props
     // console.log('dataBase')
     // console.log(dataBase)
@@ -70,6 +71,7 @@ function App(props) {
                     addNewElement={addNewElement}
                     selectedNode={selectedCacheNode}
                     deleteElement={deleteElement}
+                    apply={apply}
                     reset={reset}/>
             </div>
             <GetElementButtonWrapper>
@@ -101,7 +103,8 @@ const mapDispatchToProps = dispatch => ({
     selectCacheNode: node => dispatch(actions.selectCacheNode(node)),
     addNewElement: value => dispatch(actions.addNewElement(value)),
     editElement: value => dispatch(actions.editElement(value)),
-    deleteElement: (id, parentPath) => dispatch(actions.deleteElement(id, parentPath))
+    deleteElement: (id, parentPath) => dispatch(actions.deleteElement(id, parentPath)),
+    apply: () => dispatch(actions.apply())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

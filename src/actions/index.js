@@ -57,3 +57,12 @@ export const deleteElement = (id, parentPath) => ({
     id,
     parentPath
 })
+
+export const apply = () => ({
+    type: types.APPLY
+})
+
+export const setDataBase = db => ({
+    type: types.SET_DATA_BASE,
+    db
+})

@@ -65,6 +65,11 @@ export default function reduce(state = initialState, action = {}) {
                 ...state,
                 nextId: state.nextId + 1
             }
+        case types.SET_DATA_BASE:
+            return {
+                ...state,
+                dataBase: action.db
+            }
         default:
             return state;
     }
