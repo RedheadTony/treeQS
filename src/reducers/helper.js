@@ -1,27 +1,32 @@
 export const db = {
     '1' : {
-        id: '1',
+        id: 1,
+        parentPath: '0',
         value: 'name',
         deleted: false,
         children: {
-            '1.2' : {
-                id: '1.2',
+            '2' : {
+                id: 2,
+                parentPath: '0.1',
                 value: 'name2',
                 deleted: false,
                 children: []
             },
-            '1.3': {
-                id: '1.3',
+            '3': {
+                id: 3,
+                parentPath: '0.1',
                 value: 'name3',
                 deleted: false,
                 children: {
-                    '1.3.4': {
-                        id: '1.3.4',
+                    '4': {
+                        id: 4,
+                        parentPath: '0.1.3',
                         value: 'name4',
                         deleted: false,
                         children: {
-                            '1.3.4.5': {
-                                id: '1.3.4.5',
+                            '5': {
+                                id: 5,
+                                parentPath: '0.1.3.4',
                                 value: 'name500',
                                 deleted: false,
                                 children: {}

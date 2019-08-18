@@ -46,7 +46,7 @@ function App(props) {
                 <ActionsPanel reset={reset}/>
             </div>
             <GetElementButtonWrapper>
-                <MoveButton onClick={moveToCache}/>
+                <MoveButton disabled={!selectedNode.id} onClick={moveToCache}/>
             </GetElementButtonWrapper>
             <TreeView
                 tree={dataBase}

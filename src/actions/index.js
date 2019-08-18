@@ -12,3 +12,8 @@ export const moveToCache = () => ({
 export const reset = () => ({
     type: types.RESET
 })
+
+export const setCache = cache => ({
+    type: types.SET_CACHE,
+    cache
+})

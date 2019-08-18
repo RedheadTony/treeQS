@@ -12,23 +12,29 @@ export default function reduce(state = initialState, action = {}) {
             console.log(action.node)
             return {
                 ...state,
-                selectedNode: action.node
+                selectedNode: {...action.node, children: {}}
             };
-        case types.MOVE_TO_CACHE: {
-            const oldCache = state.cache
-            const newCache = {
-                ...oldCache,
-                [state.selectedNode.id]: {...state.selectedNode, children: {}}
-            }
-            console.log('MOVE_TO_CACHE')
-            console.log(newCache)
-
+        // case types.MOVE_TO_CACHE: {
+        //     const oldCache = state.cache
+        //     const newCache = {
+        //         ...oldCache,
+        //         [state.selectedNode.id]: {...state.selectedNode, children: {}}
+        //     }
+        //     console.log('MOVE_TO_CACHE')
+        //     console.log(newCache)
+        //
+        //     return {
+        //         ...state,
+        //         selectedNode: {},
+        //         cache: newCache
+        //     };
+        // }
+        case types.SET_CACHE:
+            console.log(action)
             return {
                 ...state,
-                selectedNode: {},
-                cache: newCache
-            };
-        }
+                cache: action.cache
+            }
         case types.RESET:
             return {
                 ...state,

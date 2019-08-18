@@ -2,14 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga'
 
 import reducers from './reducers';
+import sagas from './sagas'
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(reducers);
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 
+sagaMiddleware.run(sagas)
 ReactDOM.render(
     <Provider store={store}>
         <App />

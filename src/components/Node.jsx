@@ -21,16 +21,10 @@ export default function Node(props) {
     const { node, selectNode, selectedNode } = props
     // const { children, value, id, deleted } = node
     // if(!id) return <div/>
-    const renderChildren = children => Object.keys(children).map(key => (
-            <Node
-                key={children[key].id}
-                node={children}
-                selectNode={selectNode}
-                selectedNode={selectedNode}/>
-        )
-    )
+    const keys = Object.keys(node)
+    // if(!keys.length) return <div/>
     const renderNodes = () => {
-        return Object.keys(node).map(key => {
+        return keys.map(key => {
             const {deleted, id, children, value} = node[key]
             const selected = selectedNode.id === node[key].id
             const onClick = () => {
