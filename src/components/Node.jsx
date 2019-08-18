@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 const NodeName = styled.div`
     font-size: 14px;
+    width: max-content;
     display: inline-block;
     cursor: pointer;
     user-select: none;

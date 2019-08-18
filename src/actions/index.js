@@ -5,6 +5,11 @@ export const selectNode = node => ({
     node
 })
 
+export const selectCacheNode = node => ({
+    type: types.SELECT_CACHE_NODE,
+    node
+})
+
 export const moveToCache = dispatch => ({
     type: types.MOVE_TO_CACHE,
     dispatch
@@ -31,4 +36,22 @@ export const openModal = (settings) => ({
 
 export const closeModal = () => ({
     type: types.CLOSE_MODAL
+})
+
+export const addNewElement = value => ({
+    type: types.ADD_NEW_ELEMENT,
+    value
+})
+
+export const editElement = value => ({
+    type: types.EDIT_NEW_ELEMENT,
+    value
+})
+
+export const incrementId = () => ({
+    type: types.INCREMENT_ID
+})
+
+export const deleteElement = () => ({
+    type: types.DELETE
 })

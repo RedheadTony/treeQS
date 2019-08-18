@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest, select } from 'redux-saga/effects'
 
 import * as types from '../actionTypes'
-import {setCache, selectNode, addId, openModal, closeModal} from "../actions";
+import {setCache, selectNode, addId, openModal, closeModal, incrementId, selectCacheNode} from "../actions";
 
 function* moveToCache({dispatch}) {
     try {
@@ -33,9 +33,60 @@ function* moveToCache({dispatch}) {
         }
         let placeWasFound = false
         let valuePlace = newCache
+        let parentNode = newCache
         for(const id in newCache) {
             if(placeWasFound) break
             if(valueToAdd.parentPath.length > newCache[id].parentPath.length) {
+                const indexOfId = valueToAdd.parentPath.indexOf(id)
+                if(indexOfId === -1) continue
+                const splitPath = valueToAdd.parentPath.slice(indexOfId).split('.')
+                for(let i = 0; i < splitPath.length; i++) {
+                    if(valuePlace[splitPath[i]]) {
+                        parentNode = valuePlace[splitPath[i]]
+                        valuePlace = valuePlace[splitPath[i]].children
+                        placeWasFound = true
+                    } else {
+                        valuePlace = newCache
+                        parentNode = newCache
+                    }
+
+                }
+            }
+
+        }
+        valuePlace[valueToAdd.id] = valueToAdd
+        console.log('parentNode')
+        console.log(parentNode)
+        if(parentNode.deleted) {
+            valuePlace[valueToAdd.id].deleted = true
+        }
+        yield put(setCache(newCache))
+        yield put(addId(valueToAdd.id))
+        yield put(selectNode({}))
+
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+function* addNewElement({value}) {
+    try {
+        const {selectedCacheNode, cache, nextId} = yield select()
+        const selectedId = selectedCacheNode.id
+        const valueToAdd = {
+            id: nextId,
+            parentPath: `${selectedCacheNode.parentPath}.${selectedId}`,
+            value,
+            deleted: false,
+            children: {}
+        }
+        console.log(valueToAdd.parentPath)
+        let placeWasFound = false
+        const newCache = {...cache}
+        let valuePlace = newCache
+        for(const id in cache) {
+            if(placeWasFound) break
+            if(valueToAdd.parentPath.length > cache[id].parentPath.length) {
                 const indexOfId = valueToAdd.parentPath.indexOf(id)
                 if(indexOfId === -1) continue
                 const splitPath = valueToAdd.parentPath.slice(indexOfId).split('.')
@@ -49,13 +100,73 @@ function* moveToCache({dispatch}) {
 
                 }
             }
-
         }
-        valuePlace[valueToAdd.id] = valueToAdd
+        valuePlace[nextId] = valueToAdd
         yield put(setCache(newCache))
-        yield put(addId(valueToAdd.id))
         yield put(selectNode({}))
+        yield put(incrementId())
+    } catch (e) {
+        console.log(e)
+    }
+}
 
+function* editElement({value}) {
+    const {selectedCacheNode, cache} = yield select()
+    const selectedId = selectedCacheNode.id
+    // const valueToAdd = {...selectedCacheNode, value}
+    let placeWasFound = false
+    const newCache = {...cache}
+    let valuePlace = newCache
+    for(const id in cache) {
+        if(placeWasFound) break
+        if(selectedCacheNode.parentPath.length > cache[id].parentPath.length) {
+            const indexOfId = selectedCacheNode.parentPath.indexOf(id)
+            if(indexOfId === -1) continue
+            const splitPath = selectedCacheNode.parentPath.slice(indexOfId).split('.')
+            for(let i = 0; i < splitPath.length; i++) {
+                if(valuePlace[splitPath[i]]) {
+                    valuePlace = valuePlace[splitPath[i]].children
+                    placeWasFound = true
+                } else {
+                    valuePlace = newCache
+                }
+
+            }
+        }
+    }
+    valuePlace[selectedId].value = value
+    yield put(setCache(newCache))
+    yield put(selectCacheNode({}))
+}
+
+function* deleteElement() {
+    try {
+        const {selectedCacheNode, cache} = yield select()
+        const selectedId = selectedCacheNode.id
+        // const valueToAdd = {...selectedCacheNode, deleted: true}
+        let placeWasFound = false
+        const newCache = {...cache}
+        let valuePlace = newCache
+        for(const id in cache) {
+            if(placeWasFound) break
+            if(selectedCacheNode.parentPath.length > cache[id].parentPath.length) {
+                const indexOfId = selectedCacheNode.parentPath.indexOf(id)
+                if(indexOfId === -1) continue
+                const splitPath = selectedCacheNode.parentPath.slice(indexOfId).split('.')
+                for(let i = 0; i < splitPath.length; i++) {
+                    if(valuePlace[splitPath[i]]) {
+                        valuePlace = valuePlace[splitPath[i]].children
+                        placeWasFound = true
+                    } else {
+                        valuePlace = newCache
+                    }
+
+                }
+            }
+        }
+        valuePlace[selectedId].deleted = true
+        yield put(setCache(newCache))
+        yield put(selectCacheNode({}))
     } catch (e) {
         console.log(e)
     }
@@ -63,6 +174,9 @@ function* moveToCache({dispatch}) {
 
 function* mySaga() {
     yield takeLatest(types.MOVE_TO_CACHE, moveToCache);
+    yield takeLatest(types.ADD_NEW_ELEMENT, addNewElement);
+    yield takeLatest(types.EDIT_NEW_ELEMENT, editElement);
+    yield takeLatest(types.DELETE, deleteElement);
 }
 
 export default mySaga;

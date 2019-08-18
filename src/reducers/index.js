@@ -8,7 +8,9 @@ const initialState = {
     IsOpen: false,
     title: '',
     text: '',
-    actions: []
+    actions: [],
+    selectedCacheNode: {},
+    nextId: 100
 }
 
 export default function reduce(state = initialState, action = {}) {
@@ -18,6 +20,12 @@ export default function reduce(state = initialState, action = {}) {
             return {
                 ...state,
                 selectedNode: {...action.node, children: {}}
+            };
+        case types.SELECT_CACHE_NODE:
+            console.log(action.node)
+            return {
+                ...state,
+                selectedCacheNode: {...action.node, children: {}}
             };
         case types.SET_CACHE:
             console.log(action)
@@ -36,7 +44,8 @@ export default function reduce(state = initialState, action = {}) {
                 selectedNode: {},
                 cache: {},
                 dataBase: db,
-                addedToCacheIds: []
+                addedToCacheIds: [],
+                selectedCacheNode: {}
             };
         case types.OPEN_MODAL:
             return {
@@ -50,6 +59,11 @@ export default function reduce(state = initialState, action = {}) {
             return {
                 ...state,
                 isOpen: false
+            }
+        case types.INCREMENT_ID:
+            return {
+                ...state,
+                nextId: state.nextId + 1
             }
         default:
             return state;

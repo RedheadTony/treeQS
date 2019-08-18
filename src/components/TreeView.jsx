@@ -12,6 +12,7 @@ const Container = styled.div`
     background-color: #FFFFFF;
     border: 1px solid #6f6f6f;
     padding: 10px;
+    overflow: auto;
 `
 
 export default function TreeView (props) {

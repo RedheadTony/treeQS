@@ -33,7 +33,23 @@ const CachedTreeViewWrapper = styled.div`
 
 function App(props) {
     // console.log(props)
-    const {dataBase, cache, moveToCache, selectedNode, selectNode, reset, isOpen, title, actions, closeModal} = props
+    const {
+        dataBase,
+        cache,
+        moveToCache,
+        selectedNode,
+        selectNode,
+        reset,
+        isOpen,
+        title,
+        actions,
+        closeModal,
+        selectedCacheNode,
+        selectCacheNode,
+        addNewElement,
+        editElement,
+        deleteElement
+    } = props
     // console.log('dataBase')
     // console.log(dataBase)
 
@@ -47,9 +63,14 @@ function App(props) {
             <div>
                 <TreeView
                     tree={cache}
-                    selectedNode={{}}
-                    selectNode={() => {}}/>
-                <ActionsPanel reset={reset}/>
+                    selectedNode={selectedCacheNode}
+                    selectNode={selectCacheNode}/>
+                <ActionsPanel
+                    editElement={editElement}
+                    addNewElement={addNewElement}
+                    selectedNode={selectedCacheNode}
+                    deleteElement={deleteElement}
+                    reset={reset}/>
             </div>
             <GetElementButtonWrapper>
                 <MoveButton disabled={!selectedNode.id} onClick={moveToCache}/>
@@ -66,6 +87,7 @@ const mapStateToProps = state => ({
     dataBase: state.dataBase,
     cache: state.cache,
     selectedNode: state.selectedNode,
+    selectedCacheNode: state.selectedCacheNode,
     isOpen: state.isOpen,
     title: state.title,
     actions: state.actions
@@ -75,7 +97,11 @@ const mapDispatchToProps = dispatch => ({
     moveToCache: () => dispatch(actions.moveToCache(dispatch)),
     selectNode: node => dispatch(actions.selectNode(node)),
     reset: () => dispatch(actions.reset()),
-    closeModal: () => dispatch(actions.closeModal())
+    closeModal: () => dispatch(actions.closeModal()),
+    selectCacheNode: node => dispatch(actions.selectCacheNode(node)),
+    addNewElement: value => dispatch(actions.addNewElement(value)),
+    editElement: value => dispatch(actions.editElement(value)),
+    deleteElement: () => dispatch(actions.deleteElement())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
