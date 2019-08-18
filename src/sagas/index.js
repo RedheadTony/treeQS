@@ -1,7 +1,7 @@
-import { call, put, takeEvery, takeLatest, select } from 'redux-saga/effects'
+import { call, put, takeEvery, takeLatest, select, fork } from 'redux-saga/effects'
 
 import * as types from '../actionTypes'
-import {setCache, selectNode, addId, openModal, closeModal, incrementId, selectCacheNode} from "../actions";
+import {setCache, selectNode, addId, openModal, closeModal, incrementId, selectCacheNode, deleteElement} from "../actions";
 
 function* moveToCache({dispatch}) {
     try {
@@ -139,20 +139,22 @@ function* editElement({value}) {
     yield put(selectCacheNode({}))
 }
 
-function* deleteElement() {
+function* deleteElementSaga({id, parentPath}) {
     try {
-        const {selectedCacheNode, cache} = yield select()
-        const selectedId = selectedCacheNode.id
+        console.log('start deleting for')
+        console.log({id, parentPath})
+        const {cache} = yield select()
+        // const selectedId = selectedCacheNode.id
         // const valueToAdd = {...selectedCacheNode, deleted: true}
         let placeWasFound = false
         const newCache = {...cache}
         let valuePlace = newCache
         for(const id in cache) {
             if(placeWasFound) break
-            if(selectedCacheNode.parentPath.length > cache[id].parentPath.length) {
-                const indexOfId = selectedCacheNode.parentPath.indexOf(id)
+            if(parentPath.length > cache[id].parentPath.length) {
+                const indexOfId = parentPath.indexOf(id)
                 if(indexOfId === -1) continue
-                const splitPath = selectedCacheNode.parentPath.slice(indexOfId).split('.')
+                const splitPath = parentPath.slice(indexOfId).split('.')
                 for(let i = 0; i < splitPath.length; i++) {
                     if(valuePlace[splitPath[i]]) {
                         valuePlace = valuePlace[splitPath[i]].children
@@ -164,7 +166,15 @@ function* deleteElement() {
                 }
             }
         }
-        valuePlace[selectedId].deleted = true
+        valuePlace[id].deleted = true
+        console.log('valuePlace fork')
+        console.log(valuePlace)
+        for(const childId in valuePlace[id].children) {
+            console.log('fork for')
+            const element = valuePlace[id].children[childId]
+            console.log(element)
+            yield put(deleteElement(element.id, element.parentPath))
+        }
         yield put(setCache(newCache))
         yield put(selectCacheNode({}))
     } catch (e) {
@@ -176,7 +186,7 @@ function* mySaga() {
     yield takeLatest(types.MOVE_TO_CACHE, moveToCache);
     yield takeLatest(types.ADD_NEW_ELEMENT, addNewElement);
     yield takeLatest(types.EDIT_NEW_ELEMENT, editElement);
-    yield takeLatest(types.DELETE, deleteElement);
+    yield takeEvery(types.DELETE, deleteElementSaga);
 }
 
 export default mySaga;

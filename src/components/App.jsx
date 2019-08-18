@@ -101,7 +101,7 @@ const mapDispatchToProps = dispatch => ({
     selectCacheNode: node => dispatch(actions.selectCacheNode(node)),
     addNewElement: value => dispatch(actions.addNewElement(value)),
     editElement: value => dispatch(actions.editElement(value)),
-    deleteElement: () => dispatch(actions.deleteElement())
+    deleteElement: (id, parentPath) => dispatch(actions.deleteElement(id, parentPath))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

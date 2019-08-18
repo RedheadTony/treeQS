@@ -52,6 +52,8 @@ export const incrementId = () => ({
     type: types.INCREMENT_ID
 })
 
-export const deleteElement = () => ({
-    type: types.DELETE
+export const deleteElement = (id, parentPath) => ({
+    type: types.DELETE,
+    id,
+    parentPath
 })

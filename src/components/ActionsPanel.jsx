@@ -56,8 +56,8 @@ export default class ActionsPanel extends React.Component {
     }
 
     deleteElement = () => {
-        const {deleteElement} = this.props
-        deleteElement()
+        const {deleteElement, selectedNode: {id, parentPath}} = this.props
+        deleteElement(id, parentPath)
     }
 
     addNewElement = value => console.log('adding ' + value)
