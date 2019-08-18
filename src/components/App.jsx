@@ -33,7 +33,7 @@ const CachedTreeViewWrapper = styled.div`
 
 function App(props) {
     // console.log(props)
-    const {dataBase, cache, moveToCache, selectedNode, selectNode, reset, isOpen, title, actions} = props
+    const {dataBase, cache, moveToCache, selectedNode, selectNode, reset, isOpen, title, actions, closeModal} = props
     // console.log('dataBase')
     // console.log(dataBase)
 
@@ -41,7 +41,7 @@ function App(props) {
         <Container>
             <Modal
                 title={title}
-                // onClose={() => console.log('gg')}
+                onClose={closeModal}
                 actions={actions}
                 isOpen={isOpen}/>
             <div>
@@ -74,7 +74,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     moveToCache: () => dispatch(actions.moveToCache(dispatch)),
     selectNode: node => dispatch(actions.selectNode(node)),
-    reset: () => dispatch(actions.reset())
+    reset: () => dispatch(actions.reset()),
+    closeModal: () => dispatch(actions.closeModal())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
