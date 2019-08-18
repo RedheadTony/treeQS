@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import TreeView from "./TreeView";
 import ActionsPanel from "./ActionsPanel";
 import MoveButton from "./MoveButton";
+import Modal from './Modal'
 import * as actions from '../actions'
 
 const Container = styled.div`
@@ -32,12 +33,17 @@ const CachedTreeViewWrapper = styled.div`
 
 function App(props) {
     // console.log(props)
-    const {dataBase, cache, moveToCache, selectedNode, selectNode, reset} = props
+    const {dataBase, cache, moveToCache, selectedNode, selectNode, reset, isOpen, title, actions} = props
     // console.log('dataBase')
     // console.log(dataBase)
 
     return(
         <Container>
+            <Modal
+                title={title}
+                // onClose={() => console.log('gg')}
+                actions={actions}
+                isOpen={isOpen}/>
             <div>
                 <TreeView
                     tree={cache}
@@ -59,11 +65,14 @@ function App(props) {
 const mapStateToProps = state => ({
     dataBase: state.dataBase,
     cache: state.cache,
-    selectedNode: state.selectedNode
+    selectedNode: state.selectedNode,
+    isOpen: state.isOpen,
+    title: state.title,
+    actions: state.actions
 })
 
 const mapDispatchToProps = dispatch => ({
-    moveToCache: () => dispatch(actions.moveToCache()),
+    moveToCache: () => dispatch(actions.moveToCache(dispatch)),
     selectNode: node => dispatch(actions.selectNode(node)),
     reset: () => dispatch(actions.reset())
 })

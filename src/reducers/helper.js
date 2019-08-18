@@ -27,9 +27,17 @@ export const db = {
                             '5': {
                                 id: 5,
                                 parentPath: '0.1.3.4',
-                                value: 'name500',
+                                value: 'name5',
                                 deleted: false,
-                                children: {}
+                                children: {
+                                    '6': {
+                                        id: 6,
+                                        parentPath: '0.1.3.4.5',
+                                        value: 'name6',
+                                        deleted: false,
+                                        children: {}
+                                    }
+                                }
                             }
                         }
                     }

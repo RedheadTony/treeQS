@@ -3,7 +3,12 @@ import {db} from './helper'
 const initialState = {
     dataBase: db,
     cache: {},
-    selectedNode: {}
+    selectedNode: {},
+    addedToCacheIds: [],
+    IsOpen: false,
+    title: '',
+    text: '',
+    actions: []
 }
 
 export default function reduce(state = initialState, action = {}) {
@@ -14,34 +19,38 @@ export default function reduce(state = initialState, action = {}) {
                 ...state,
                 selectedNode: {...action.node, children: {}}
             };
-        // case types.MOVE_TO_CACHE: {
-        //     const oldCache = state.cache
-        //     const newCache = {
-        //         ...oldCache,
-        //         [state.selectedNode.id]: {...state.selectedNode, children: {}}
-        //     }
-        //     console.log('MOVE_TO_CACHE')
-        //     console.log(newCache)
-        //
-        //     return {
-        //         ...state,
-        //         selectedNode: {},
-        //         cache: newCache
-        //     };
-        // }
         case types.SET_CACHE:
             console.log(action)
             return {
                 ...state,
                 cache: action.cache
             }
+        case types.ADD_ID:
+            return {
+                ...state,
+                addedToCacheIds: [...state.addedToCacheIds, action.id]
+            }
         case types.RESET:
             return {
                 ...state,
                 selectedNode: {},
                 cache: {},
-                dataBase: db
+                dataBase: db,
+                addedToCacheIds: []
             };
+        case types.OPEN_MODAL:
+            return {
+                ...state,
+                isOpen: true,
+                title: action.settings.title || '',
+                text: action.settings.text || '',
+                actions: action.settings.actions || []
+            }
+        case types.CLOSE_MODAL:
+            return {
+                ...state,
+                isOpen: false
+            }
         default:
             return state;
     }
