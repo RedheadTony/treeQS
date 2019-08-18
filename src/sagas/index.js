@@ -139,22 +139,22 @@ function* editElement({value}) {
     yield put(selectCacheNode({}))
 }
 
-function* deleteElementSaga({id, parentPath}) {
+function* deleteElementSaga() {
     try {
-        console.log('start deleting for')
-        console.log({id, parentPath})
-        const {cache} = yield select()
-        // const selectedId = selectedCacheNode.id
-        // const valueToAdd = {...selectedCacheNode, deleted: true}
+        // console.log('start deleting for')
+        // console.log({id, parentPath})
+        const {cache, selectedCacheNode} = yield select()
+        const selectedId = selectedCacheNode.id
+        const valueToAdd = {...selectedCacheNode}
         let placeWasFound = false
         const newCache = {...cache}
         let valuePlace = newCache
         for(const id in cache) {
             if(placeWasFound) break
-            if(parentPath.length > cache[id].parentPath.length) {
-                const indexOfId = parentPath.indexOf(id)
+            if(selectedCacheNode.parentPath.length > cache[id].parentPath.length) {
+                const indexOfId = selectedCacheNode.parentPath.indexOf(id)
                 if(indexOfId === -1) continue
-                const splitPath = parentPath.slice(indexOfId).split('.')
+                const splitPath = selectedCacheNode.parentPath.slice(indexOfId).split('.')
                 for(let i = 0; i < splitPath.length; i++) {
                     if(valuePlace[splitPath[i]]) {
                         valuePlace = valuePlace[splitPath[i]].children
@@ -166,15 +166,15 @@ function* deleteElementSaga({id, parentPath}) {
                 }
             }
         }
-        valuePlace[id].deleted = true
-        console.log('valuePlace fork')
-        console.log(valuePlace)
-        for(const childId in valuePlace[id].children) {
-            console.log('fork for')
-            const element = valuePlace[id].children[childId]
-            console.log(element)
-            yield put(deleteElement(element.id, element.parentPath))
+        valuePlace[selectedId].deleted = true
+        const deletingElement = valuePlace[selectedId]
+        const deleteWithChildren = (deletingElement) => {
+            deletingElement.deleted = true
+            for (const id in deletingElement.children) {
+                deleteWithChildren(deletingElement.children[id])
+            }
         }
+        deleteWithChildren(deletingElement)
         yield put(setCache(newCache))
         yield put(selectCacheNode({}))
     } catch (e) {
