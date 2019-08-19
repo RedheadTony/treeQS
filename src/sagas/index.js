@@ -49,9 +49,7 @@ function* moveToCache({ dispatch }) {
     const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
     // let parentNodeDeleted = false
-    let parentNodeDeleted = deletedElementsIds.some(el =>
-      valueToAdd.parentPath.indexOf(el)
-    )
+    let parentNodeDeleted = deletedElementsIds.includes(valueToAdd.id)
     if (parentNodeDeleted) {
       valueToAdd.deleted = true
     }
