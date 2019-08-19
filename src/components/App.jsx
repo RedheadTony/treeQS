@@ -29,7 +29,6 @@ const GetElementButtonWrapper = styled.div`
 `
 
 function App(props) {
-  // console.log(props)
   const {
     dataBase,
     cache,
@@ -85,13 +84,13 @@ function App(props) {
 }
 
 const mapStateToProps = state => ({
-  dataBase: state.dataBase,
-  cache: state.cache,
-  selectedNode: state.selectedNode,
-  selectedCacheNode: state.selectedCacheNode,
-  isOpen: state.isOpen,
-  title: state.title,
-  actions: state.actions
+  dataBase: state.db.dataBase,
+  cache: state.cache.cache,
+  selectedNode: state.db.selectedNode,
+  selectedCacheNode: state.cache.selectedCacheNode,
+  isOpen: state.app.isOpen,
+  title: state.app.title,
+  actions: state.app.actions
 })
 
 const mapDispatchToProps = dispatch => ({

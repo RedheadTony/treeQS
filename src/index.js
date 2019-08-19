@@ -4,12 +4,19 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 
-import reducers from './reducers'
+import appReducer from './reducers'
+import cacheTree from './reducers/cacheTree'
+import dbTree from './reducers/dbTree'
 import sagas from './sagas'
 import './index.css'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 
+const reducers = combineReducers({
+  app: appReducer,
+  cache: cacheTree,
+  db: dbTree
+})
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducers, applyMiddleware(sagaMiddleware))
 

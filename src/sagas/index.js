@@ -21,12 +21,12 @@ import {
 
 function* moveToCache({ dispatch }) {
   try {
+    const {selectedNode} = yield select(state => state.db)
     const {
-      selectedNode,
       cache,
       addedToCacheIds,
       deletedElementsIds
-    } = yield select()
+    } = yield select(state => state.cache)
     const foundId = addedToCacheIds.filter(id => id === selectedNode.id)
 
     if (foundId.length) {
@@ -48,8 +48,7 @@ function* moveToCache({ dispatch }) {
     yield call(moveChildrenIntoParent, newCache, valueToAdd)
     const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
-    // let parentNodeDeleted = false
-    let parentNodeDeleted = deletedElementsIds.includes(valueToAdd.id)
+    const parentNodeDeleted = deletedElementsIds.some(id => valueToAdd.parentPath.split('.').includes(id.toString()))
     if (parentNodeDeleted) {
       valueToAdd.deleted = true
     }
@@ -63,7 +62,8 @@ function* moveToCache({ dispatch }) {
 
 function* addNewElement({ value }) {
   try {
-    const { selectedCacheNode, cache, nextId } = yield select()
+    const { nextId } = yield select(state => state.db)
+    const { selectedCacheNode, cache } = yield select(state => state.cache)
     const selectedId = selectedCacheNode.id
     const valueToAdd = {
       id: nextId,
@@ -85,7 +85,7 @@ function* addNewElement({ value }) {
 }
 
 function* editElement({ value }) {
-  const { selectedCacheNode, cache } = yield select()
+  const { selectedCacheNode, cache } = yield select(state => state.cache)
   const selectedId = selectedCacheNode.id
   const newCache = copyObj(cache)
   const { valuePlace } = yield call(findPlace, newCache, selectedCacheNode)
@@ -96,7 +96,7 @@ function* editElement({ value }) {
 
 function* deleteElementSaga() {
   try {
-    const { cache, selectedCacheNode } = yield select()
+    const { cache, selectedCacheNode } = yield select(state => state.cache)
     const selectedId = selectedCacheNode.id
     const newCache = copyObj(cache)
     const { valuePlace } = yield call(findPlace, newCache, selectedCacheNode)
@@ -117,7 +117,8 @@ function* deleteElementSaga() {
 
 function* apply() {
   try {
-    const { cache, dataBase } = yield select()
+    const { cache } = yield select(state => state.cache)
+    const { dataBase } = yield select(state => state.db)
     const dbCopy = copyObj(dataBase)
     for (const id in cache) {
       const element = copyObj(cache[id])
