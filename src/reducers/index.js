@@ -5,6 +5,7 @@ const initialState = {
   cache: {},
   selectedNode: {},
   addedToCacheIds: [],
+  deletedElementsIds: [],
   IsOpen: false,
   title: '',
   text: '',
@@ -45,7 +46,8 @@ export default function reduce(state = initialState, action = {}) {
         cache: {},
         dataBase: db,
         addedToCacheIds: [],
-        selectedCacheNode: {}
+        selectedCacheNode: {},
+        deletedElementsIds: []
       }
     case types.OPEN_MODAL:
       return {
@@ -69,6 +71,14 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         dataBase: action.db
+      }
+    case types.DELETE:
+      return {
+        ...state,
+        deletedElementsIds: [
+          ...state.deletedElementsIds,
+          state.selectedCacheNode.id
+        ]
       }
     default:
       return state

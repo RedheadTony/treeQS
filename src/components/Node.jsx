@@ -21,10 +21,8 @@ const NodeName = styled.div`
 
 export default function Node(props) {
   const { node, selectNode, selectedNode } = props
-  // const { children, value, id, deleted } = node
-  // if(!id) return <div/>
   const keys = Object.keys(node)
-  // if(!keys.length) return <div/>
+
   const renderNodes = () => {
     return keys.map(key => {
       const { deleted, id, children, value } = node[key]
@@ -51,34 +49,3 @@ export default function Node(props) {
 
   return renderNodes()
 }
-
-// export default function Node(props) {
-//     console.log('props')
-//     console.log(props);
-//     const { node, selectNode, selectedNode } = props
-//     const { children, value, id, deleted } = node
-//     if(!id) return <div/>
-//     const renderChildren = () => children.map(el => (
-//         <Node
-//             key={el.id}
-//             node={el}
-//             selectNode={selectNode}
-//             selectedNode={selectedNode}/>
-//         )
-//     )
-//     const selected = selectedNode.id === id
-//     const onClick = () => {
-//         if(!deleted && !selected) selectNode(node)
-//     }
-//     return(
-//         <>
-//             <NodeName
-//                 onClick={onClick}
-//                 deleted={deleted}
-//                 selected={selected}>
-//                 {value}
-//             </NodeName>
-//                 <div style={{paddingLeft: 25}}>{children && renderChildren()}</div>
-//         </>
-//     )
-// }

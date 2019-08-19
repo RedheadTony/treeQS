@@ -76,7 +76,7 @@ export default class ModalForm extends React.Component {
   }
 
   render() {
-    const { isOpen, title, onSubmit, onClose } = this.props
+    const { isOpen, title, onClose } = this.props
     const { value } = this.state
     if (!isOpen) return <div />
 
@@ -89,7 +89,7 @@ export default class ModalForm extends React.Component {
               e.preventDefault()
               this.sendData()
             }}>
-            <input value={value} onChange={this.setValue} />
+            <input autoFocus value={value} onChange={this.setValue} />
           </FormContent>
           <Actions>
             <Button style={buttonStyle} onClick={this.sendData}>

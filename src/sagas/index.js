@@ -21,7 +21,12 @@ import {
 
 function* moveToCache({ dispatch }) {
   try {
-    const { selectedNode, cache, addedToCacheIds } = yield select()
+    const {
+      selectedNode,
+      cache,
+      addedToCacheIds,
+      deletedElementsIds
+    } = yield select()
     const foundId = addedToCacheIds.filter(id => id === selectedNode.id)
 
     if (foundId.length) {
@@ -41,12 +46,12 @@ function* moveToCache({ dispatch }) {
     const newCache = yield copyObj(cache)
     let valueToAdd = yield copyObj(selectedNode)
     yield call(moveChildrenIntoParent, newCache, valueToAdd)
-    const { valuePlace, parentNodeDeleted } = yield call(
-      findPlace,
-      newCache,
-      valueToAdd
-    )
+    const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
+    // let parentNodeDeleted = false
+    let parentNodeDeleted = deletedElementsIds.some(el =>
+      valueToAdd.parentPath.indexOf(el)
+    )
     if (parentNodeDeleted) {
       valueToAdd.deleted = true
     }
@@ -73,6 +78,7 @@ function* addNewElement({ value }) {
     const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
     yield put(setCache(newCache))
+    yield put(addId(valueToAdd.id))
     yield put(selectNode({}))
     yield put(incrementId())
   } catch (e) {

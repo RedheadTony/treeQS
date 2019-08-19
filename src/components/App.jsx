@@ -28,8 +28,6 @@ const GetElementButtonWrapper = styled.div`
   height: 70vh;
 `
 
-const CachedTreeViewWrapper = styled.div``
-
 function App(props) {
   // console.log(props)
   const {
@@ -50,8 +48,6 @@ function App(props) {
     deleteElement,
     apply
   } = props
-  // console.log('dataBase')
-  // console.log(dataBase)
 
   return (
     <Container>
