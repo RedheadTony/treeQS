@@ -82,6 +82,36 @@ export const db = {
                     value: 'name6',
                     deleted: false,
                     children: {}
+                  },
+                  '13': {
+                    id: 13,
+                    parentPath: '0.1.3.4.5',
+                    value: 'name13',
+                    deleted: false,
+                    children: {
+                      '14': {
+                        id: 14,
+                        parentPath: '0.1.3.4.5.13',
+                        value: 'name10',
+                        deleted: false,
+                        children: {
+                          '15': {
+                            id: 15,
+                            parentPath: '0.1.3.4.5.13.14',
+                            value: 'name12',
+                            deleted: false,
+                            children: {}
+                          }
+                        }
+                      },
+                      '16': {
+                        id: 16,
+                        parentPath: '0.1.3.4.5.13',
+                        value: 'name11',
+                        deleted: false,
+                        children: {}
+                      }
+                    }
                   }
                 }
               }
@@ -92,37 +122,3 @@ export const db = {
     }
   }
 }
-
-// dataBase: {
-//     id: '1',
-//         value: 'name',
-//         deleted: false,
-//         children: [
-//         {
-//             id: '1.2',
-//             value: 'name2',
-//             deleted: true,
-//             children: []
-//         },
-//         {
-//             id: '1.3',
-//             value: 'name3',
-//             deleted: false,
-//             children: [
-//                 {
-//                     id: '1.3.4',
-//                     value: 'name4',
-//                     deleted: false,
-//                     children: [
-//                         {
-//                             id: '1.3.4.5',
-//                             value: 'name2',
-//                             deleted: false,
-//                             children: []
-//                         },
-//                     ]
-//                 }
-//             ]
-//         }
-//     ]
-// },

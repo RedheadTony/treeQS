@@ -29,10 +29,17 @@ function* moveToCache({ dispatch }) {
     } = yield select(state => state.cache)
     const foundId = addedToCacheIds.filter(id => id === selectedNode.id)
 
+    const newCache = yield copyObj(cache)
+    let valueToAdd = yield copyObj(selectedNode)
     if (foundId.length) {
+      const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
+      let message = 'Element already moved.'
+      if(valueToAdd.value !== valuePlace[valueToAdd.id].value) {
+        message = `Element already moved. His name is "${valuePlace[valueToAdd.id].value}".`
+      }
       yield put(
         openModal({
-          title: 'Element already moved',
+          title: message,
           actions: [
             {
               title: 'Ok',
@@ -43,8 +50,7 @@ function* moveToCache({ dispatch }) {
       )
       return
     }
-    const newCache = yield copyObj(cache)
-    let valueToAdd = yield copyObj(selectedNode)
+
     yield call(moveChildrenIntoParent, newCache, valueToAdd)
     const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd

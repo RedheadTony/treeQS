@@ -12,7 +12,8 @@ const Container = styled.div`
   background-color: #eaeaea;
   height: calc(100vh - 30px);
   width: 100vw;
-  min-width: 700px;
+  min-width: 800px;
+  min-height: 400px;
   padding-top: 30px;
   display: flex;
   flex-direction: row;

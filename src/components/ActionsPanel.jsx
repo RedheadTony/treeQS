@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { Button } from './commonStyledComponent/buttons'
 import ModalForm from './ModalForm'
+import DeletingModal from './Modal'
 
 const Container = styled.div`
   width: 100%;
@@ -28,10 +29,12 @@ export default class ActionsPanel extends React.Component {
   state = {
     isOpen: false,
     title: '',
-    type: formTypes.ADDING
+    type: formTypes.ADDING,
+    isOpenDeleting: false
   }
 
-  openModal = () => this.setState({ isOpen: true })
+  openDeleting = () => this.setState({ isOpenDeleting: true })
+  closeDeleting = () => this.setState({ isOpenDeleting: false })
 
   closeModal = () => this.setState({ isOpen: false })
 
@@ -61,6 +64,7 @@ export default class ActionsPanel extends React.Component {
       selectedNode: { id, parentPath }
     } = this.props
     deleteElement(id, parentPath)
+    this.closeDeleting()
   }
 
   apply = () => {
@@ -73,10 +77,24 @@ export default class ActionsPanel extends React.Component {
 
   render() {
     const { reset, selectedNode, addNewElement, editElement } = this.props
-    const { isOpen, title, type } = this.state
+    const { isOpen, title, type, isOpenDeleting } = this.state
     const disabledEditingButtons = !selectedNode.id
     return (
       <>
+        <DeletingModal
+          title={`Delete node "${selectedNode.value}"?`}
+          onClose={this.closeDeleting}
+          isOpen={isOpenDeleting}
+          actions={[
+            {
+              title: 'Delete',
+              onClick: this.deleteElement
+            },
+            {
+              title: 'Cancel',
+              onClick: this.closeDeleting
+            }
+          ]}/>
         <ModalForm
           isOpen={isOpen}
           onClose={this.closeModal}
@@ -92,7 +110,7 @@ export default class ActionsPanel extends React.Component {
               +
             </Button>
             <Button
-              onClick={this.deleteElement}
+              onClick={this.openDeleting}
               disabled={disabledEditingButtons}>
               -
             </Button>

@@ -17,6 +17,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   min-width: 400px;
+  max-width: 80vw;
   background-color: #ffffff;
   padding: 25px;
   position: relative;

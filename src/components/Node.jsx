@@ -27,7 +27,8 @@ export default function Node(props) {
     return keys.map(key => {
       const { deleted, id, children, value } = node[key]
       const selected = selectedNode.id === node[key].id
-      const onClick = () => {
+      const onClick = e => {
+        e.stopPropagation()
         if (!deleted && !selected) selectNode(node[key])
       }
       return (
