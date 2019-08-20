@@ -54,7 +54,8 @@ function* moveToCache({ dispatch }) {
     yield call(moveChildrenIntoParent, newCache, valueToAdd)
     const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
-    const parentNodeDeleted = deletedElementsIds.some(id => valueToAdd.parentPath.split('.').includes(id.toString()))
+    console.log(valueToAdd.parentPath)
+    const parentNodeDeleted = deletedElementsIds.some(id => {console.log(id); return valueToAdd.parentPath.split('.').includes(id.toString())})
     if (parentNodeDeleted) {
       valueToAdd.deleted = true
     }
@@ -141,6 +142,7 @@ function* apply() {
       copyWithChildren(element.children, elementInDb[element.id].children)
     }
     yield put(setDataBase(dbCopy))
+    yield put(selectNode({}))
   } catch (e) {
     console.log(e)
   }

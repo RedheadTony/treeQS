@@ -4,6 +4,9 @@ import styled from 'styled-components'
 import { Button } from './commonStyledComponent/buttons'
 import ModalForm from './ModalForm'
 import DeletingModal from './Modal'
+import deleteIcon from '../images/deleteIcon.svg'
+import addIcon from '../images/addIcon.svg'
+import editIcon from '../images/editIcon.svg'
 
 const Container = styled.div`
   width: 100%;
@@ -107,17 +110,17 @@ export default class ActionsPanel extends React.Component {
             <Button
               onClick={this.openAddingDialog}
               disabled={disabledEditingButtons}>
-              +
+              <img src={addIcon} />
             </Button>
             <Button
               onClick={this.openDeleting}
               disabled={disabledEditingButtons}>
-              -
+              <img src={deleteIcon} />
             </Button>
             <Button
               onClick={this.openEditingDialog}
               disabled={disabledEditingButtons}>
-              a
+              <img src={editIcon} />
             </Button>
           </ButtonGroup>
           <ButtonGroup style={{ width: 130 }}>

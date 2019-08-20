@@ -50,6 +50,14 @@ const Actions = styled.div`
   padding-right: 10px;
 `
 
+const Input = styled.input`
+  outline: none;
+  padding: 5px;
+  font-size: 17px;
+  width: 200px;
+  border: 1px solid rgba(2, 158, 116, 1);
+`
+
 const buttonStyle = { width: 70, marginRight: 10 }
 export default class ModalForm extends React.Component {
   constructor(props) {
@@ -89,7 +97,7 @@ export default class ModalForm extends React.Component {
               e.preventDefault()
               this.sendData()
             }}>
-            <input autoFocus value={value} onChange={this.setValue} />
+            <Input autoFocus value={value} onChange={this.setValue} />
           </FormContent>
           <Actions>
             <Button style={buttonStyle} onClick={this.sendData}>
