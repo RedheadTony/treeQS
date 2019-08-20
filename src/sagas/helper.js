@@ -29,9 +29,14 @@ export function deleteWithChildren(deletingElement) {
 export function moveChildrenIntoParent(objLink, parentLink) {
   Object.keys(objLink).forEach(id => {
     if (parentLink.parentPath.length < objLink[id].parentPath.length) {
-      const indexOfId = objLink[id].parentPath.indexOf(parentLink.id)
-      if (indexOfId === -1) return
-      const splitPath = objLink[id].parentPath.slice(indexOfId).split('.')
+      const splitPath = []
+      let startPush = false
+      objLink[id].parentPath.split('.').forEach(id => {
+        if (+id === parentLink.id || startPush) {
+          startPush = true
+          splitPath.push(id)
+        }
+      })
       if (splitPath.length === 1 && +splitPath[0] === parentLink.id) {
         parentLink.children = { ...parentLink.children, [id]: objLink[id] }
         delete objLink[id]
@@ -46,9 +51,14 @@ export function findPlace(objLink, insertableItem) {
   for (const id in objLink) {
     if (placeWasFound) break
     if (insertableItem.parentPath.length > objLink[id].parentPath.length) {
-      const indexOfId = insertableItem.parentPath.indexOf(id)
-      if (indexOfId === -1) continue
-      const splitPath = insertableItem.parentPath.slice(indexOfId).split('.')
+      const splitPath = []
+      let startPush = false
+      insertableItem.parentPath.split('.').forEach(tmpId => {
+        if (+tmpId === +id || startPush) {
+          startPush = true
+          splitPath.push(tmpId)
+        }
+      })
       for (let i = 0; i < splitPath.length; i++) {
         if (valuePlace[splitPath[i]]) {
           valuePlace = valuePlace[splitPath[i]].children

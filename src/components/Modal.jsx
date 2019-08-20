@@ -31,6 +31,8 @@ export default class Modal extends React.Component {
     }
   }
 
+  stopPropagation = e => e.stopPropagation()
+
   render() {
     const { isOpen, title, text, actions, onClose } = this.props
     const { className } = this.state
@@ -45,7 +47,7 @@ export default class Modal extends React.Component {
     }
     return (
       <Container className={className} onClick={onClose ? onClose : undefined}>
-        <Content>
+        <Content onClick={this.stopPropagation}>
           {title && <Title>{title}</Title>}
           {text && <Text>{text}</Text>}
           {actions && <Actions>{renderActions()}</Actions>}

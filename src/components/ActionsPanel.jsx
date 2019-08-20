@@ -45,7 +45,7 @@ export default class ActionsPanel extends React.Component {
   openAddingDialog = () => {
     const { selectedNode } = this.props
     this.setState({
-      title: `Adding new element in "${selectedNode.value}"`,
+      title: `Add new element into "${selectedNode.value}"`,
       isOpen: true,
       type: formTypes.ADDING
     })
@@ -54,7 +54,7 @@ export default class ActionsPanel extends React.Component {
   openEditingDialog = () => {
     const { selectedNode } = this.props
     this.setState({
-      title: `Editing element "${selectedNode.value}"`,
+      title: `Edit element "${selectedNode.value}"`,
       isOpen: true,
       type: formTypes.EDITING
     })

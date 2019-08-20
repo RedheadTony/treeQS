@@ -1,12 +1,14 @@
 import * as types from '../actionTypes'
 import { getTree } from './helper'
 
-const db = getTree()
+const { tree, nextId } = getTree()
+console.log('tree')
+console.log(tree)
 
 const initialState = {
-  dataBase: db,
+  dataBase: tree,
   selectedNode: {},
-  nextId: 100
+  nextId
 }
 
 export default function reduce(state = initialState, action = {}) {
@@ -20,7 +22,7 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         selectedNode: {},
-        dataBase: db
+        dataBase: tree
       }
     case types.INCREMENT_ID:
       return {

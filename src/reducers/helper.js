@@ -182,7 +182,44 @@ const tree = {
     },
     {
       value: 'Node4',
-      children: []
+      children: [
+        {
+          value: 'Node14',
+          children: [
+            {
+              value: 'Node15',
+              children: [
+                {
+                  value: 'Node16',
+                  children: []
+                },
+                {
+                  value: 'Node17',
+                  children: [
+                    {
+                      value: 'Node18',
+                      children: []
+                    },
+                    {
+                      value: 'Node19',
+                      children: [
+                        {
+                          value: 'Node20',
+                          children: []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  value: 'Node21',
+                  children: []
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
@@ -206,5 +243,5 @@ function renderTree(tree, treeObj, id, parentPath) {
 export function getTree() {
   let treeObj = {}
   renderTree(tree, treeObj, 1, '0')
-  return { '1': treeObj }
+  return { tree: { '1': treeObj }, nextId: globalId + 1 }
 }

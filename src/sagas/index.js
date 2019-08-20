@@ -109,8 +109,10 @@ function* deleteElementSaga() {
     valuePlace[selectedId].deleted = true
     deleteWithChildren(valuePlace[selectedId])
     for (const id in newCache) {
-      const indexOfId = newCache[id].parentPath.indexOf(selectedId)
-      if (indexOfId !== -1) {
+      const shouldBeDeleted = newCache[id].parentPath
+        .split('.')
+        .includes(selectedId.toString())
+      if (shouldBeDeleted) {
         deleteWithChildren(newCache[id])
       }
     }
