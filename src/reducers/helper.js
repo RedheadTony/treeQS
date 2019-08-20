@@ -122,3 +122,85 @@ export const db = {
     }
   }
 }
+
+const tree = {
+  value: 'Node1',
+  children: [
+    {
+      value: 'Node2',
+      children: []
+    },
+    {
+      value: 'Node3',
+      children: [
+        {
+          value: 'Node5',
+          children: []
+        },
+        {
+          value: 'Node6',
+          children: [
+            {
+              value: 'Node7',
+              children: [
+                {
+                  value: 'Node8',
+                  children: []
+                },
+                {
+                  value: 'Node9',
+                  children: [
+                    {
+                      value: 'Node10',
+                      children: []
+                    },
+                    {
+                      value: 'Node11',
+                      children: [
+                        {
+                          value: 'Node12',
+                          children: []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  value: 'Node13',
+                  children: []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      value: 'Node4',
+      children: []
+    }
+  ]
+}
+
+let globalId = 2
+
+function renderTree(tree, treeObj, id, parentPath) {
+  treeObj.value = tree.value
+  treeObj.deleted = false
+  treeObj.id = id
+  const childPath = `${parentPath}.${treeObj.id}`
+  treeObj.parentPath = parentPath
+  treeObj.children = {}
+  tree.children.forEach(child => {
+    const childId = globalId++
+    treeObj.children[childId] = {}
+    renderTree(child, treeObj.children[childId], childId, childPath)
+  })
+
+}
+
+export function getTree() {
+  let treeObj = {}
+  renderTree(tree, treeObj, 1, '0')
+  return {'1': treeObj}
+}
