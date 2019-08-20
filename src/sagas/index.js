@@ -32,7 +32,7 @@ function* moveToCache({ dispatch }) {
     const newCache = yield copyObj(cache)
     let valueToAdd = yield copyObj(selectedNode)
     if (foundId.length) {
-      const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
+      const valuePlace = yield call(findPlace, newCache, valueToAdd)
       let message = 'Element already moved.'
       if(valueToAdd.value !== valuePlace[valueToAdd.id].value) {
         message = `Element already moved. His name is "${valuePlace[valueToAdd.id].value}".`
@@ -52,10 +52,9 @@ function* moveToCache({ dispatch }) {
     }
 
     yield call(moveChildrenIntoParent, newCache, valueToAdd)
-    const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
+    const valuePlace = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
-    console.log(valueToAdd.parentPath)
-    const parentNodeDeleted = deletedElementsIds.some(id => {console.log(id); return valueToAdd.parentPath.split('.').includes(id.toString())})
+    const parentNodeDeleted = deletedElementsIds.some(id => valueToAdd.parentPath.split('.').includes(id.toString()))
     if (parentNodeDeleted) {
       valueToAdd.deleted = true
     }
@@ -80,7 +79,7 @@ function* addNewElement({ value }) {
       children: {}
     }
     const newCache = copyObj(cache)
-    const { valuePlace } = yield call(findPlace, newCache, valueToAdd)
+    const valuePlace = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
     yield put(setCache(newCache))
     yield put(addId(valueToAdd.id))
@@ -95,7 +94,7 @@ function* editElement({ value }) {
   const { selectedCacheNode, cache } = yield select(state => state.cache)
   const selectedId = selectedCacheNode.id
   const newCache = copyObj(cache)
-  const { valuePlace } = yield call(findPlace, newCache, selectedCacheNode)
+  const valuePlace = yield call(findPlace, newCache, selectedCacheNode)
   valuePlace[selectedId].value = value
   yield put(setCache(newCache))
   yield put(selectCacheNode({}))
@@ -106,7 +105,7 @@ function* deleteElementSaga() {
     const { cache, selectedCacheNode } = yield select(state => state.cache)
     const selectedId = selectedCacheNode.id
     const newCache = copyObj(cache)
-    const { valuePlace } = yield call(findPlace, newCache, selectedCacheNode)
+    const valuePlace = yield call(findPlace, newCache, selectedCacheNode)
     valuePlace[selectedId].deleted = true
     deleteWithChildren(valuePlace[selectedId])
     for (const id in newCache) {

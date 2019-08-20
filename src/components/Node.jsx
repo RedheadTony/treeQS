@@ -13,15 +13,21 @@ const NodeName = styled.div`
   transition: background-color ease 0.5s;
   border: 1px solid #FFFFFF;
   ${({ deleted, selected }) => {
-    if (deleted) return 'background-color: rgba(181, 65, 116, 0.27); border-color: rgba(181, 65, 116, 1); color: rgba(181, 65, 116, 1); cursor: default;'
-    if (selected) return 'background-color: rgba(17, 241, 180, 0.27); border-color: rgba(2,158,116,1); color: rgba(2,158,116,1);'
+    if (deleted) return 'background-color: rgba(181, 65, 116, 0.27);' +
+        'border-color: rgba(181, 65, 116, 1);' +
+        'color: rgba(181, 65, 116, 1);' +
+        'cursor: default;'
+    if (selected) return 'background-color: rgba(17, 241, 180, 0.27);' +
+        'border-color: rgba(2,158,116,1);' +
+        'color: rgba(2,158,116,1);'
   }}
     :hover {
-    ${({ deleted }) => !deleted && 'background-color: rgba(17, 241, 180, 0.27); border-color: rgba(2,158,116,1); color: rgba(2,158,116,1);'}
+    ${({ deleted }) => !deleted && 'background-color: rgba(17, 241, 180, 0.27);' +
+    'border-color: rgba(2,158,116,1);' +
+    'color: rgba(2,158,116,1);'}
   }
 `
-//selected #8eb1ff
-// deleted #8eb1ff
+
 export default function Node(props) {
   const { node, selectNode, selectedNode } = props
   const keys = Object.keys(node)

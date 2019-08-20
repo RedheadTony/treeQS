@@ -28,6 +28,7 @@ const formTypes = {
   EDITING: 'EDITING'
 }
 
+const buttonStyle = { width: 70 }
 export default class ActionsPanel extends React.Component {
   state = {
     isOpen: false,
@@ -43,7 +44,6 @@ export default class ActionsPanel extends React.Component {
 
   openAddingDialog = () => {
     const { selectedNode } = this.props
-    // console.log(selectedNode)
     this.setState({
       title: `Adding new element in "${selectedNode.value}"`,
       isOpen: true,
@@ -53,7 +53,6 @@ export default class ActionsPanel extends React.Component {
 
   openEditingDialog = () => {
     const { selectedNode } = this.props
-    // console.log(selectedNode)
     this.setState({
       title: `Editing element "${selectedNode.value}"`,
       isOpen: true,
@@ -75,29 +74,29 @@ export default class ActionsPanel extends React.Component {
     apply()
   }
 
-  addNewElement = value => console.log('adding ' + value)
-  editingNewElement = value => console.log('editing ' + value)
+  actions = [
+    {
+      title: 'Delete',
+      onClick: this.deleteElement
+    },
+    {
+      title: 'Cancel',
+      onClick: this.closeDeleting
+    }
+  ]
 
   render() {
     const { reset, selectedNode, addNewElement, editElement } = this.props
     const { isOpen, title, type, isOpenDeleting } = this.state
     const disabledEditingButtons = !selectedNode.id
+
     return (
       <>
         <DeletingModal
           title={`Delete node "${selectedNode.value}"?`}
           onClose={this.closeDeleting}
           isOpen={isOpenDeleting}
-          actions={[
-            {
-              title: 'Delete',
-              onClick: this.deleteElement
-            },
-            {
-              title: 'Cancel',
-              onClick: this.closeDeleting
-            }
-          ]}/>
+          actions={this.actions}/>
         <ModalForm
           isOpen={isOpen}
           onClose={this.closeModal}
@@ -108,24 +107,24 @@ export default class ActionsPanel extends React.Component {
         <Container>
           <ButtonGroup style={{ width: 100 }}>
             <Button
-              onClick={this.openAddingDialog}
+              onClick={!disabledEditingButtons ? this.openAddingDialog : undefined}
               disabled={disabledEditingButtons}>
-              <img src={addIcon} />
+              <img alt="" src={addIcon} />
             </Button>
             <Button
-              onClick={this.openDeleting}
+              onClick={!disabledEditingButtons ? this.openDeleting : undefined}
               disabled={disabledEditingButtons}>
-              <img src={deleteIcon} />
+              <img alt="" src={deleteIcon} />
             </Button>
             <Button
-              onClick={this.openEditingDialog}
+              onClick={!disabledEditingButtons ? this.openEditingDialog : undefined}
               disabled={disabledEditingButtons}>
-              <img src={editIcon} />
+              <img alt="" src={editIcon} />
             </Button>
           </ButtonGroup>
-          <ButtonGroup style={{ width: 130 }}>
-            <Button onClick={this.apply}>Apply</Button>
-            <Button onClick={reset}>Reset</Button>
+          <ButtonGroup>
+            <Button style={buttonStyle} onClick={this.apply}>Apply</Button>
+            <Button style={buttonStyle} onClick={reset}>Reset</Button>
           </ButtonGroup>
         </Container>
       </>

@@ -2,8 +2,6 @@ import * as types from '../actionTypes'
 import { getTree } from './helper'
 
 const db = getTree()
-console.log('db')
-console.log(db)
 
 const initialState = {
   dataBase: db,

@@ -7,7 +7,7 @@ import ActionsPanel from './ActionsPanel'
 import MoveButton from './MoveButton'
 import Modal from './Modal'
 import * as actions from '../actions'
-//background-color: #eaeaea;
+
 const Container = styled.div`
   height: calc(100vh - 30px);
   width: 100vw;

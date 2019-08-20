@@ -23,8 +23,4 @@ export const Button = styled.div`
       filter: grayscale(100%);
     }`
   }
-  :hover {
-    // color: #FFFFFF;
-    // background: rgba(2,158,116,1);
-  }
 `

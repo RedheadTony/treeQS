@@ -43,7 +43,6 @@ export function moveChildrenIntoParent(objLink, parentLink) {
 export function findPlace(objLink, insertableItem) {
   let placeWasFound = false
   let valuePlace = objLink
-  let parentNode = objLink
   for (const id in objLink) {
     if (placeWasFound) break
     if (insertableItem.parentPath.length > objLink[id].parentPath.length) {
@@ -52,15 +51,13 @@ export function findPlace(objLink, insertableItem) {
       const splitPath = insertableItem.parentPath.slice(indexOfId).split('.')
       for (let i = 0; i < splitPath.length; i++) {
         if (valuePlace[splitPath[i]]) {
-          parentNode = valuePlace[splitPath[i]]
           valuePlace = valuePlace[splitPath[i]].children
           placeWasFound = true
         } else {
           valuePlace = objLink
-          parentNode = objLink
         }
       }
     }
   }
-  return { valuePlace, parentNodeDeleted: parentNode.deleted }
+  return valuePlace
 }
