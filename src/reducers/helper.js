@@ -201,11 +201,10 @@ function renderTree(tree, treeObj, id, parentPath) {
     treeObj.children[childId] = {}
     renderTree(child, treeObj.children[childId], childId, childPath)
   })
-
 }
 
 export function getTree() {
   let treeObj = {}
   renderTree(tree, treeObj, 1, '0')
-  return {'1': treeObj}
+  return { '1': treeObj }
 }

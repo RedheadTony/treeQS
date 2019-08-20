@@ -21,12 +21,10 @@ import {
 
 function* moveToCache({ dispatch }) {
   try {
-    const {selectedNode} = yield select(state => state.db)
-    const {
-      cache,
-      addedToCacheIds,
-      deletedElementsIds
-    } = yield select(state => state.cache)
+    const { selectedNode } = yield select(state => state.db)
+    const { cache, addedToCacheIds, deletedElementsIds } = yield select(
+      state => state.cache
+    )
     const foundId = addedToCacheIds.filter(id => id === selectedNode.id)
 
     const newCache = yield copyObj(cache)
@@ -34,7 +32,7 @@ function* moveToCache({ dispatch }) {
     if (foundId.length) {
       const valuePlace = yield call(findPlace, newCache, valueToAdd)
       let message = 'Element already moved.'
-      if(valueToAdd.value !== valuePlace[valueToAdd.id].value) {
+      if (valueToAdd.value !== valuePlace[valueToAdd.id].value) {
         message = `Element already moved. His name is "${valuePlace[valueToAdd.id].value}".`
       }
       yield put(
@@ -54,7 +52,9 @@ function* moveToCache({ dispatch }) {
     yield call(moveChildrenIntoParent, newCache, valueToAdd)
     const valuePlace = yield call(findPlace, newCache, valueToAdd)
     valuePlace[valueToAdd.id] = valueToAdd
-    const parentNodeDeleted = deletedElementsIds.some(id => valueToAdd.parentPath.split('.').includes(id.toString()))
+    const parentNodeDeleted = deletedElementsIds.some(id =>
+      valueToAdd.parentPath.split('.').includes(id.toString())
+    )
     if (parentNodeDeleted) {
       valueToAdd.deleted = true
     }

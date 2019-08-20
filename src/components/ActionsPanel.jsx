@@ -96,7 +96,8 @@ export default class ActionsPanel extends React.Component {
           title={`Delete node "${selectedNode.value}"?`}
           onClose={this.closeDeleting}
           isOpen={isOpenDeleting}
-          actions={this.actions}/>
+          actions={this.actions}
+        />
         <ModalForm
           isOpen={isOpen}
           onClose={this.closeModal}
@@ -107,7 +108,9 @@ export default class ActionsPanel extends React.Component {
         <Container>
           <ButtonGroup style={{ width: 100 }}>
             <Button
-              onClick={!disabledEditingButtons ? this.openAddingDialog : undefined}
+              onClick={
+                !disabledEditingButtons ? this.openAddingDialog : undefined
+              }
               disabled={disabledEditingButtons}>
               <img alt="" src={addIcon} />
             </Button>
@@ -117,14 +120,20 @@ export default class ActionsPanel extends React.Component {
               <img alt="" src={deleteIcon} />
             </Button>
             <Button
-              onClick={!disabledEditingButtons ? this.openEditingDialog : undefined}
+              onClick={
+                !disabledEditingButtons ? this.openEditingDialog : undefined
+              }
               disabled={disabledEditingButtons}>
               <img alt="" src={editIcon} />
             </Button>
           </ButtonGroup>
           <ButtonGroup>
-            <Button style={buttonStyle} onClick={this.apply}>Apply</Button>
-            <Button style={buttonStyle} onClick={reset}>Reset</Button>
+            <Button style={buttonStyle} onClick={this.apply}>
+              Apply
+            </Button>
+            <Button style={buttonStyle} onClick={reset}>
+              Reset
+            </Button>
           </ButtonGroup>
         </Container>
       </>

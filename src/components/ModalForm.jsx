@@ -2,7 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Button } from './commonStyledComponent/buttons'
-import { Container, Content, Title, Actions } from './commonStyledComponent/modals'
+import {
+  Container,
+  Content,
+  Title,
+  Actions
+} from './commonStyledComponent/modals'
 
 // const Container = styled.div`
 //   height: 100vh;
@@ -89,7 +94,7 @@ export default class ModalForm extends React.Component {
   componentDidUpdate(prevProps) {
     console.log('componentDidUpdate modal')
     if (!prevProps.isOpen && this.props.isOpen) {
-      this.setState({ value: this.props.value || ''})
+      this.setState({ value: this.props.value || '' })
       setTimeout(() => {
         this.setState({ className: 'open' })
       }, 5)
@@ -100,14 +105,14 @@ export default class ModalForm extends React.Component {
 
   setValue = e => this.setState({ value: e.target.value })
 
-  showError = () => this.setState({showError: true})
+  showError = () => this.setState({ showError: true })
 
-  hideError = () => this.setState({showError: false})
+  hideError = () => this.setState({ showError: false })
 
   sendData = () => {
     const { onSubmit, onClose } = this.props
     const { value } = this.state
-    if(!value) {
+    if (!value) {
       this.showError()
       return
     }
@@ -130,13 +135,14 @@ export default class ModalForm extends React.Component {
               e.preventDefault()
               this.sendData()
             }}>
-            <div style={{display: 'grid'}}>
+            <div style={{ display: 'grid' }}>
               <Label>Value:</Label>
               <Input
-                  autoFocus
-                  value={value}
-                  onChange={this.setValue}
-                  onFocus={this.hideError} />
+                autoFocus
+                value={value}
+                onChange={this.setValue}
+                onFocus={this.hideError}
+              />
               {value === '' && showError && <Error>Is required</Error>}
             </div>
           </FormContent>

@@ -20,7 +20,7 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         selectedNode: {},
-        dataBase: db,
+        dataBase: db
       }
     case types.INCREMENT_ID:
       return {
