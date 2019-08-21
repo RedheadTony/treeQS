@@ -2,8 +2,9 @@ export function copyObj(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
-export function copyWithChildren(cacheChild, dbChild) {
+export function copyWithChildren(cacheChild, parent) {
   for (const id in cacheChild) {
+    const dbChild = parent.children
     if (dbChild[id]) {
       if (cacheChild[id].deleted) {
         deleteWithChildren(dbChild[id])
@@ -11,14 +12,17 @@ export function copyWithChildren(cacheChild, dbChild) {
       dbChild[id].value = cacheChild[id].value
     } else {
       dbChild[id] = copyObj(cacheChild[id])
+      delete dbChild[id].parentId
     }
-
-    copyWithChildren(cacheChild[id].children, dbChild[id].children)
+    dbChild[id].parent = parent
+    copyWithChildren(cacheChild[id].children, dbChild[id])
   }
 }
 
 export function deleteWithChildren(deletingElement) {
   deletingElement.deleted = true
+  console.log('deletingElement')
+  console.log(deletingElement)
   for (const id in deletingElement.children) {
     if (!deletingElement.children[id].deleted) {
       deleteWithChildren(deletingElement.children[id])

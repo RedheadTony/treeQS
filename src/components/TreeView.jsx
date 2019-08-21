@@ -16,6 +16,8 @@ const Container = styled.div`
 export default function TreeView(props) {
   const { tree, selectNode, selectedNode } = props
   const unselectNode = () => selectNode({})
+  console.log('tree')
+  console.log(tree)
   return (
     <Container onClick={unselectNode}>
       <Node node={tree} selectNode={selectNode} selectedNode={selectedNode} />

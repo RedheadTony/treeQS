@@ -245,3 +245,22 @@ export function getTree() {
   renderTree(tree, treeObj, 1, '0')
   return { tree: { '1': treeObj }, nextId: globalId + 1 }
 }
+
+function renderTree2(tree, treeObj, id, parent) {
+  treeObj.value = tree.value
+  treeObj.deleted = false
+  treeObj.id = id
+  treeObj.parent = parent
+  treeObj.children = {}
+  tree.children.forEach(child => {
+    const childId = globalId++
+    treeObj.children[childId] = {}
+    renderTree2(child, treeObj.children[childId], childId, treeObj)
+  })
+}
+
+export function getTree2() {
+  let treeObj = {}
+  renderTree2(tree, treeObj, 1, null)
+  return { tree: { '1': treeObj }, nextId: globalId + 1 }
+}

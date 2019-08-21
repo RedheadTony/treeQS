@@ -1,7 +1,7 @@
 import * as types from '../actionTypes'
-import { getTree } from './helper'
+import { getTree2 } from './helper'
 
-const { tree, nextId } = getTree()
+const { tree, nextId } = getTree2()
 console.log('tree')
 console.log(tree)
 
@@ -16,7 +16,7 @@ export default function reduce(state = initialState, action = {}) {
     case types.SELECT_NODE:
       return {
         ...state,
-        selectedNode: { ...action.node, children: {} }
+        selectedNode: action.node
       }
     case types.RESET:
       return {
