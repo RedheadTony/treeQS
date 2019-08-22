@@ -24,11 +24,6 @@ export const setCache = cache => ({
   cache
 })
 
-export const addId = id => ({
-  type: types.ADD_ID,
-  id
-})
-
 export const openModal = settings => ({
   type: types.OPEN_MODAL,
   settings

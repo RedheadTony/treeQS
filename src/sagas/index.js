@@ -4,7 +4,6 @@ import * as types from '../actionTypes'
 import {
   setCache,
   selectNode,
-  addId,
   openModal,
   closeModal,
   incrementId,
@@ -123,7 +122,6 @@ function* addNewElement({ value }) {
     const parentNode = yield call(find, newCache, selectedId) || newCache
     parentNode.children[newNode.id] = newNode
     yield put(setCache(newCache))
-    yield put(addId(newNode.id))
     yield put(selectNode({}))
     yield put(incrementId())
   } catch (e) {
