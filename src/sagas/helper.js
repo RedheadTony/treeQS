@@ -3,8 +3,8 @@ export function copyObj(obj) {
 }
 
 export function copyWithChildren(cacheChild, parent) {
+  const dbChild = parent.children
   for (const id in cacheChild) {
-    const dbChild = parent.children
     if (dbChild[id]) {
       if (cacheChild[id].deleted) {
         deleteWithChildren(dbChild[id])
@@ -12,18 +12,29 @@ export function copyWithChildren(cacheChild, parent) {
       dbChild[id].value = cacheChild[id].value
     } else {
       dbChild[id] = copyObj(cacheChild[id])
+      delete dbChild[id].distantChild
       delete dbChild[id].parentId
     }
     dbChild[id].parent = parent
+
     copyWithChildren(cacheChild[id].children, dbChild[id])
   }
 }
 
-export function deleteWithChildren(deletingElement) {
+export function deleteWithChildren(deletingElement, tree) {
   deletingElement.deleted = true
+
+  if(deletingElement.distantChild) {
+    deletingElement.distantChild.forEach(id => {
+      const child = find(tree, id)
+      deleteWithChildren(child, tree)
+    })
+  }
+
   for (const id in deletingElement.children) {
     if (!deletingElement.children[id].deleted) {
-      deleteWithChildren(deletingElement.children[id])
+      deleteWithChildren(deletingElement.children[id], tree)
+      deleteWithChildren(deletingElement.children[id], tree)
     }
   }
 }

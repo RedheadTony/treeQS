@@ -148,12 +148,12 @@ function* deleteElementSaga() {
     const newCache = yield call(copyObj, cache)
     const node = yield call(find, newCache, selectedId) || newCache
     node.deleted = true
-    yield call(deleteWithChildren, node)
+    yield call(deleteWithChildren, node, newCache)
     // хотел в distantChild хранить ссылки, реализовать не вышло
     // видимо создавался новый объект, где - не нашел, обошел через id
     node.distantChild.forEach(id => {
       const child = find(newCache, id)
-      deleteWithChildren(child)
+      deleteWithChildren(child, newCache)
     })
     yield put(setCache(newCache))
     yield put(selectCacheNode({}))
